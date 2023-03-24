@@ -99,6 +99,27 @@ vagrant@vagrant:/etc/systemd/system$
 
 
 1. Изучите опции node_exporter и вывод `/metrics` по умолчанию. Приведите несколько опций, которые вы бы выбрали для базового мониторинга хоста по CPU, памяти, диску и сети.
+```
+node_cpu_seconds_total{cpu="0",mode="iowait"} 
+node_cpu_seconds_total{cpu="0",mode="system"} 
+node_cpu_seconds_total{cpu="0",mode="user"} 
+node_disk_io_time_seconds_total{device="sda"} 6.148
+node_disk_io_now{device="sda"} 0
+node_filesystem_free_bytes{device="/dev/mapper/ubuntu--vg-ubuntu--lv",fstype="ext4",mountpoint="/"} 2.8220698624e+10
+node_memory_MemFree_bytes 3.474272256e+09
+node_memory_Buffers_bytes 4.6231552e+07
+node_memory_Cached_bytes 3.58531072e+08
+node_memory_SwapCached_bytes 0
+node_network_receive_packets_total{device="eth0"} 2284
+node_network_receive_errs_total{device="eth0"} 0
+node_network_transmit_packets_total{device="eth0"} 1642
+node_network_transmit_errs_total{device="eth0"} 0
+
+для быстрой оценки состояния хоста должно хватить
+```
+
+
+
 
 1. Установите в свою виртуальную машину [Netdata](https://github.com/netdata/netdata). Воспользуйтесь [готовыми пакетами](https://packagecloud.io/netdata/netdata/install) для установки (`sudo apt install -y netdata`). 
    
@@ -114,9 +135,18 @@ vagrant@vagrant:/etc/systemd/system$
     После успешной перезагрузки в браузере на своём ПК (не в виртуальной машине) вы должны суметь зайти на `localhost:19999`. Ознакомьтесь с метриками, которые по умолчанию собираются Netdata, и с комментариями, которые даны к этим метрикам.
 ```
 Скрин netdata
+```
 ![Скрин netdata](https://github.com/yahanext/hw4/blob/main/scr.png)
 
 1. Можно ли по выводу `dmesg` понять, осознаёт ли ОС, что загружена не на настоящем оборудовании, а на системе виртуализации?
+```
+Ос ничего не осознает, при загрузке ос определяет гипервизор и его тип.
+###
+[    0.000000] DMI: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[    0.000000] Hypervisor detected: KVM
+###
+Но к примеру в vmware можно отредактировать конфигурацию виртуальный машины, что бы скрыть от нее наличие гипервизора.
+Если установлены дополнения специфичные для гипервизора, набор модулей будет для каждого гипервизора свой.
 
 1. Как настроен sysctl `fs.nr_open` на системе по умолчанию? Определите, что означает этот параметр. Какой другой существующий лимит не позволит достичь такого числа (`ulimit --help`)?
 
