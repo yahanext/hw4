@@ -77,6 +77,22 @@ Mar 24 09:33:46 vagrant node_exporter[2873]: ts=2023-03-24T09:33:46.385Z caller=
 vagrant@vagrant:/etc/systemd/system$ 
 
 Если необходим конфигурационный файл то изменения в файле 
+agrant@vagrant:/etc/systemd/system$ cat node_exporter.service
+[Unit]
+Description=Node Exporter
+After=network.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+EnvironmentFile=/etc/default/node_exporter
+ExecStart=/usr/local/bin/node_exporter $OPTIONS 
+
+[Install]
+WantedBy=multi-user.target
+vagrant@vagrant:/etc/systemd/system$ 
+
+Переменную $OPTIONS определяем в файле /etc/default/node_exporter
 
 
 
