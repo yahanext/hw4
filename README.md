@@ -93,12 +93,13 @@ WantedBy=multi-user.target
 vagrant@vagrant:/etc/systemd/system$ 
 
 Переменную $OPTIONS определяем в файле /etc/default/node_exporter
-
+```
 
 
 
 
 1. Изучите опции node_exporter и вывод `/metrics` по умолчанию. Приведите несколько опций, которые вы бы выбрали для базового мониторинга хоста по CPU, памяти, диску и сети.
+
 ```
 node_cpu_seconds_total{cpu="0",mode="iowait"} 
 node_cpu_seconds_total{cpu="0",mode="system"} 
