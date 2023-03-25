@@ -175,6 +175,7 @@ root           1  0.0  0.0   5476   516 pts/1    S+   15:43   0:00 sleep 1h
 root           2  0.0  0.1   7236  4184 pts/2    S    15:44   0:00 -bash
 root          14  0.0  0.0   8888  3320 pts/2    R+   15:45   0:00 ps aux
 root@vagrant:/# 
+имеем pid 1
 ```
 
 
@@ -184,6 +185,35 @@ root@vagrant:/#
 форк бомба функция бесконечно запускает саму себя и так до тех пор пока судя по 
 dmesg
 226.068101] cgroup: fork rejected by pids controller in /user.slice/user-1000.slice/session-3.scope
+cgroups – это механизм ядра, позволяющий ограничивать использование, вести учет и изолировать потребление
+системных ресурсов на уровне коллекций процессов.
+Выести лимит по процессам
+vagrant@vagrant:~$ sudo systemctl status user-1000.slice
+● user-1000.slice - User Slice of UID 1000
+     Loaded: loaded
+    Drop-In: /usr/lib/systemd/system/user-.slice.d
+             └─10-defaults.conf
+     Active: active since Sat 2023-03-25 15:51:07 UTC; 22min ago
+       Docs: man:user@.service(5)
+      Tasks: 8 (limit: 10145)
+     Memory: 29.7M
+     CGroup: /user.slice/user-1000.slice
+             ├─session-3.scope
+             │ ├─ 1570 sshd: vagrant [priv]
+             │ ├─ 1627 sshd: vagrant@pts/0
+             │ ├─ 1628 -bash
+             │ ├─71621 sudo systemctl status user-1000.slice
+             │ ├─71622 systemctl status user-1000.slice
+             │ └─71623 pager
+             └─user@1000.service
+               └─init.scope
+                 ├─1586 /lib/systemd/systemd --user
+                 └─1587 (sd-pam)
+Лимит 10145
+
+данный параметр изменяется в файле
+root@vagrant:/lib/systemd/system/user-.slice.d/10-defaults.conf
+```
 
 *В качестве решения отправьте ответы на вопросы и опишите, как эти ответы были получены.*
 
